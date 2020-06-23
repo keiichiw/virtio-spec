@@ -61,3 +61,11 @@ cat > setup-generated.tex <<EOF
 \newcommand{\virtiodraftstagename}{$STAGENAME}
 \newcommand{\virtiodraftoasisstagename}{$OASISSTAGENAME}
 EOF
+
+# Generate PNG from DOT
+mkdir -p images/generated
+for file in images/*.dot
+do
+    BASENAME=`basename "$file" .dot`
+    dot -Tpng -o images/generated/${BASENAME}.png ${file}
+done

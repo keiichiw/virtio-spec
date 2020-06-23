@@ -1,0 +1,18 @@
+digraph {
+  graph [ rankdir = LR, layout = dot ];
+
+  init [style = invis]
+  destroyed  [style = invis]
+  created [label="Created", shape=circle]
+  dequeued [label="Dequeued", shape=circle]
+  queued [label="Queued", shape=circle]
+
+  init -> created [label="RESOURCE_CREATE"]
+
+  created -> queued [label="RESOURCE_QUEUE is sent"]
+  dequeued -> queued [label="RESOURCE_QUEUE\n is sent"]
+  queued -> dequeued [label="RESOURCE_QUEUE\n has returned"]
+
+  created -> destroyed [label="RESOURCE_DESTROY_ALL"]
+  dequeued -> destroyed [label="RESOURCE_DESTROY_ALL"]
+}
