@@ -532,12 +532,14 @@ with the same semantics as \field{device_lifetime_est_typ_a}.
 
 The final \field{status} byte is written by the device: either
 VIRTIO_BLK_S_OK for success, VIRTIO_BLK_S_IOERR for device or driver
-error or VIRTIO_BLK_S_UNSUPP for a request unsupported by device:
+error, VIRTIO_BLK_S_UNSUPP for a request unsupported by device or
+VIRTIO_BLK_S_NOSPC for an error that device doesn't have enough space.
 
 \begin{lstlisting}
 #define VIRTIO_BLK_S_OK        0
 #define VIRTIO_BLK_S_IOERR     1
 #define VIRTIO_BLK_S_UNSUPP    2
+#define VIRTIO_BLK_S_NOSPC     7
 \end{lstlisting}
 
 The status of individual segments is indeterminate when a discard or write zero
@@ -567,10 +569,11 @@ reset (VIRTIO_BLK_T_ZONE_RESET) or a zone reset all
 Requests of type VIRTIO_BLK_T_OUT, VIRTIO_BLK_T_ZONE_OPEN,
 VIRTIO_BLK_T_ZONE_CLOSE, VIRTIO_BLK_T_ZONE_FINISH, VIRTIO_BLK_T_ZONE_APPEND,
 VIRTIO_BLK_T_ZONE_RESET or VIRTIO_BLK_T_ZONE_RESET_ALL may be completed by the
-device with VIRTIO_BLK_S_OK, VIRTIO_BLK_S_IOERR or VIRTIO_BLK_S_UNSUPP
-\field{status}, or, additionally, with  VIRTIO_BLK_S_ZONE_INVALID_CMD,
-VIRTIO_BLK_S_ZONE_UNALIGNED_WP, VIRTIO_BLK_S_ZONE_OPEN_RESOURCE or
-VIRTIO_BLK_S_ZONE_ACTIVE_RESOURCE ZBD-specific status codes.
+device with VIRTIO_BLK_S_OK, VIRTIO_BLK_S_IOERR, VIRTIO_BLK_S_UNSUPP or
+VIRTIO_BLK_S_NOSPC \field{status}, or, additionally, with
+VIRTIO_BLK_S_ZONE_INVALID_CMD, VIRTIO_BLK_S_ZONE_UNALIGNED_WP,
+VIRTIO_BLK_S_ZONE_OPEN_RESOURCE or VIRTIO_BLK_S_ZONE_ACTIVE_RESOURCE ZBD-specific
+status codes.
 
 Besides the request status, VIRTIO_BLK_T_ZONE_APPEND requests return the
 starting sector of the appended data back to the driver. For this reason,
